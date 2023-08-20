@@ -1,0 +1,9 @@
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# mounted symlinks
+outputs
+data
+
+# environments
+.venv/

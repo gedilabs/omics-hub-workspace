@@ -1,0 +1,52 @@
+###############################################################################
+#
+# Environment Configuation for an OmicsHub Workspace
+#
+# author : James A. Perez
+#
+###############################################################################
+
+################################################################################
+# Make variables from environment
+################################################################################
+
+OMICSHUB_HOME = $(shell echo $$OMICSHUB_HOME)
+EFS_SHARE_DNS = $(shell echo $$EFS_SHARE_DNS)
+EFS_MINIWDL_DNS = $(shell echo $$EFS_MINIWDL_DNS)
+S3_BUCKET_SEQ = $(shell echo $$S3_BUCKET_SEQ)
+S3_MNT_PATH = $(shell echo $$S3_MNT_PATH)
+EFS_MNT_PATH = $(shell echo $$EFS_MNT_PATH)
+
+################################################################################
+# Mount OPTS
+################################################################################
+
+S3FS_OPTS= -o allow_other,iam_role=auto
+NFS_OPTS = -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport
+INSTALL_OPTS = -o 1000 -g 1000
+
+###############################################################################
+# Host Paths
+###############################################################################
+
+HOST_PATH_S3_SEQ = $(S3_MNT_PATH)/$(S3_BUCKET_SEQ)
+HOST_PATH_S3_MINIWDL = $(S3_MNT_PATH)/$(S3_BUCKET_MINIWDL)
+HOST_PATH_EFS_SHARE = $(EFS_MNT_PATH)/share
+HOST_PATH_EFS_MINIWDL = $(EFS_MNT_PATH)/miniwdl
+
+###############################################################################
+# OmicsHub Home (root directory for JupyterHub) 
+###############################################################################
+
+OMICSHUB_HOME = /home/debian/omicshub
+
+###############################################################################
+# Symbolic Links for OmicsHub Workspace 
+###############################################################################
+
+SYMLINK_S3_MINIWDL ?= $(OMICSHUB_HOME)/s3/miniwdl_outputs
+SYMLINK_S3_SEQ ?= $(OMICSHUB_HOME)/s3/seq
+SYMLINK_EFS_NOTEBOOKS ?= $(OMICSHUB_HOME)/notebooks
+SYMLINK_EFS_WDL ?= $(OMICSHUB_HOME)/wdl
+SYMLINK_EFS_INPUT_JSON ?= $(OMICSHUB_HOME)/input_json
+SYMLINK_EFS_MINIWDL ?= $(OMICSHUB_HOME)/runs

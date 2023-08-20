@@ -86,9 +86,6 @@ mount-s3:
 	  ${MOUNT_S3} $(S3_BUCKET_MINIWDL) $(HOST_PATH_S3_MINIWDL) \
 	)
 
-test-link:
-	ln -sf $(HOST_PATH_S3_SEQ) $(SYMLINK_S3_SEQ)
-
 MAKELINK=sh -c '\
   if [ ! -L $$2 ] ; then \
   	echo "linking :: $$1 -> $$2"; \

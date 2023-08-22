@@ -10,7 +10,6 @@
 # Make variables from environment
 ################################################################################
 
-OMICSHUB_HOME = $(shell echo $$OMICSHUB_HOME)
 EFS_SHARE_DNS = $(shell echo $$EFS_SHARE_DNS)
 EFS_MINIWDL_DNS = $(shell echo $$EFS_MINIWDL_DNS)
 S3_BUCKET_SEQ = $(shell echo $$S3_BUCKET_SEQ)
@@ -39,7 +38,7 @@ HOST_PATH_EFS_MINIWDL = $(EFS_MNT_PATH)/miniwdl
 # OmicsHub Home (root directory for JupyterHub) 
 ###############################################################################
 
-OMICSHUB_HOME = /home/debian/omicshub
+OMICSHUB_HOME = /home/$(shell id -nu $(LINUX_UID))/omicshub
 
 ###############################################################################
 # Symbolic Links for OmicsHub Workspace 

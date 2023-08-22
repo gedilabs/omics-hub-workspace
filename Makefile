@@ -27,11 +27,15 @@ endif
 ifeq ($(EFS_MINIWDL_DNS),)
 $(error EFS_MINIWDL_DNS not defined -- $(msg))
 endif
+ifeq ($(LINUX_UID),)
+$(error LINUX_UID not defined -- $(msg))
+endif
 
 env:
 	@echo OMICSHUB_HOME=$(OMICSHUB_HOME)
 	@echo EFS_SHARE_DNS=$(EFS_SHARE_DNS)
 	@echo EFS_MINIWDL_DNS=$(EFS_MINIWDL_DNS)
+	@echo LINUX_UID=$(LINUX_UID)
 	@echo HOST_PATH_S3_SEQ=$(HOST_PATH_S3_SEQ) 
 	@echo HOST_PATH_S3_MINIWDL=$(HOST_PATH_S3_MINIWDL) 
 	@echo HOST_PATH_EFS_SHARE=$(HOST_PATH_EFS_SHARE) 
@@ -76,7 +80,7 @@ mount-efs:
 MOUNT_S3=sh -c '\
   if ! grep -qs "$$2" /proc/mounts; then \
   	echo "mounting :: s3://$$1:/ $$2"; \
-	sudo s3fs $$1 $$2 $(S3FS_OPTS); else \
+	s3fs $$1 $$2 $(S3FS_OPTS); else \
 	echo "already mounted ::  s3://$$1:/ $$2"; \
   fi' MOUNT_S3
 

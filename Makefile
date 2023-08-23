@@ -144,7 +144,10 @@ mounts: mount-paths mount-efs mount-s3
 
 remount: unmount mount-efs mount-s3
 
-workspace: init links
+jupyter:
+	jupyterhub --ip 0.0.0.0 --port 8000 c.Spawner.notebook_dir=$(OMICSHUB_HOME)
+
+workspace: init links jupyter
 
 RMDIR=sh -c '\
   if [ -d $$1 ] ; then \
@@ -152,9 +155,6 @@ RMDIR=sh -c '\
   	sudo rmdir $$1; else \
   	echo "directory does not exist :: $$1"; \
   fi' RMDIR
-
-jupyter:
-	jupyterhub --ip 0.0.0.0 --port 8000 --notebook-dir=$(OMICSHUB_HOME)
 
 clean-host: unmount
 	@( \

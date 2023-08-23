@@ -145,8 +145,6 @@ mounts: mount-paths mount-efs mount-s3
 remount: unmount mount-efs mount-s3
 
 workspace: init links
-	mkdir -p $(OMICSHUB_HOME)/.config
-	cp miniwdl.cfg $(OMICSHUB_HOME)/.config
 
 RMDIR=sh -c '\
   if [ -d $$1 ] ; then \
@@ -156,7 +154,7 @@ RMDIR=sh -c '\
   fi' RMDIR
 
 jupyter:
-	jupyter lab --allow-root --ip 0.0.0.0 --port 3737 --no-browser --notebook-dir=$(OMICSHUB_HOME)
+	jupyterhub --ip 0.0.0.0 --port 8000 --notebook-dir=$(OMICSHUB_HOME)
 
 clean-host: unmount
 	@( \
@@ -169,7 +167,5 @@ clean-host: unmount
 clean-pod: unlink 
 	@( \
 	  ${RMDIR} $(OMICSHUB_HOME)/s3; \
-	  rm $(OMICSHUB_HOME)/.config/miniwdl.cfg; \
-	  ${RMDIR} $(OMICSHUB_HOME)/.config; \
 	  ${RMDIR} $(OMICSHUB_HOME); \
 	)

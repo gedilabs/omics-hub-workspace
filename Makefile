@@ -148,7 +148,7 @@ mounts: mount-paths mount-efs mount-s3
 remount: unmount mount-efs mount-s3
 
 jupyter:
-	jupyterhub --ip 0.0.0.0 --port 8000 --Spawner.notebook_dir=$(OMICSHUB_HOME) -f $(JUPYTER_CONFIG_DIR)
+	jupyterhub --ip 0.0.0.0 --port 8000 --Spawner.notebook_dir=$(OMICSHUB_HOME) -f $(JUPYTER_CONFIG_DIR)/jupyter_config.py
 
 workspace: init links jupyter
 

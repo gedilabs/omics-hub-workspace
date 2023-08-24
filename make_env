@@ -16,6 +16,7 @@ S3_BUCKET_SEQ = $(shell echo $$S3_BUCKET_SEQ)
 S3_MNT_PATH = $(shell echo $$S3_MNT_PATH)
 EFS_MNT_PATH = $(shell echo $$EFS_MNT_PATH)
 LINUX_UID = $(shell echo $$LINUX_UID)
+JUPYTER_CONFIG_DIR = $(shell echo $$JUPYTER_CONFIG_DIR)
 
 ################################################################################
 # Mount OPTS

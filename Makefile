@@ -30,6 +30,9 @@ endif
 ifeq ($(LINUX_UID),)
 $(error LINUX_UID not defined -- $(msg))
 endif
+ifeq ($(JUPYTER_CONFIG_DIR),)
+$(error JUPYTER_CONFIG_DIR not defined -- $(msg))
+endif
 
 env:
 	@echo OMICSHUB_HOME=$(OMICSHUB_HOME)
@@ -145,7 +148,7 @@ mounts: mount-paths mount-efs mount-s3
 remount: unmount mount-efs mount-s3
 
 jupyter:
-	jupyterhub --ip 0.0.0.0 --port 8000 --Spawner.notebook_dir=$(OMICSHUB_HOME)
+	jupyterhub --ip 0.0.0.0 --port 8000 --Spawner.notebook_dir=$(OMICSHUB_HOME) -f $(JUPYTER_CONFIG_DIR)
 
 workspace: init links jupyter
 

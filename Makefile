@@ -67,8 +67,8 @@ mount-paths:
 MOUNT_NFS=sh -c '\
   if ! grep -qs "$$2" /proc/mounts; then \
   	echo "mounting :: $$1:/ $$2"; \
-	sudo mount -t nfs $(NFS_OPTS) $$1:/ $$2; else \
-	echo "already mounted ::  $$1:/ $$2"; \
+	  sudo mount -t nfs $(NFS_OPTS) $$1:/ $$2; else \
+	  echo "already mounted ::  $$1:/ $$2"; \
   fi' MOUNT_NFS
 
 mount-efs:
@@ -93,7 +93,7 @@ mount-s3:
 MAKELINK=sh -c '\
   if [ ! -L $$2 ] ; then \
   	echo "linking :: $$1 -> $$2"; \
-	mkdir -p $$1; \
+	  mkdir -p $$1; \
   	ln -sf $$1 $$2; else \
   	echo "already linked :: $$1 -> $$2"; \
   fi' MAKELINK
@@ -145,7 +145,7 @@ mounts: mount-paths mount-efs mount-s3
 remount: unmount mount-efs mount-s3
 
 jupyter:
-	jupyterhub --ip 0.0.0.0 --port 8000 --Spawner.notebook_dir=$(OMICSHUB_HOME)
+	jupyterhub --ip 0.0.0.0 --port 8000
 
 workspace: init links jupyter
 

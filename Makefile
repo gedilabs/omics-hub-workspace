@@ -145,7 +145,7 @@ mounts: mount-paths mount-efs mount-s3
 remount: unmount mount-efs mount-s3
 
 jupyter:
-	jupyterhub --ip 0.0.0.0 --port 8000
+	jupyterhub --ip 0.0.0.0 --port 8000 -f /etc/jupyterhub/jupyterhub_config.py
 
 workspace: init links jupyter
 

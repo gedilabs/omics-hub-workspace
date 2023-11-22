@@ -17,6 +17,9 @@ S3_MNT_PATH = $(shell echo $$S3_MNT_PATH)
 EFS_MNT_PATH = $(shell echo $$EFS_MNT_PATH)
 LINUX_UID = $(shell echo $$LINUX_UID)
 
+# user home directory for JupyterHub
+OMICSHUB_HOME = $(shell echo $$OMICSHUB_HOME)
+
 ################################################################################
 # Mount OPTS
 ################################################################################
@@ -33,12 +36,6 @@ HOST_PATH_S3_SEQ = $(S3_MNT_PATH)/$(S3_BUCKET_SEQ)
 HOST_PATH_S3_MINIWDL = $(S3_MNT_PATH)/$(S3_BUCKET_MINIWDL)
 HOST_PATH_EFS_SHARE = $(EFS_MNT_PATH)/share
 HOST_PATH_EFS_MINIWDL = $(EFS_MNT_PATH)/miniwdl
-
-###############################################################################
-# OmicsHub Home (root directory for JupyterHub) 
-###############################################################################
-
-OMICSHUB_HOME = /home/$(shell id -nu $(LINUX_UID))/omicshub
 
 ###############################################################################
 # Symbolic Links for OmicsHub Workspace 

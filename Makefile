@@ -47,7 +47,8 @@ env:
 MAKEDIR=sh -c '\
   if [ ! -d $$1 ] ; then \
   	echo "installing :: $$1"; \
-  	sudo install -d $$1 $(INSTALL_OPTS); else \
+  	sudo install -d $$1 $(INSTALL_OPTS) && \
+		sudo chgrp $(LINUX_UID) $$1; else \
   	echo "already installed ::  $$1"; \
   fi' MAKEDIR
 

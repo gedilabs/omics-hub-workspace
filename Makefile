@@ -85,7 +85,7 @@ MOUNT_S3=sh -c '\
   if ! grep -qs "$$2" /proc/mounts; then \
   	echo "mounting :: s3://$$1:/ $$2"; \
 	  s3fs $$1 $$2 $(S3FS_OPTS); \
-	  sudo chmod -R 755 ; else
+	  sudo chmod -R 755 ; else \
 	  echo "already mounted ::  s3://$$1:/ $$2"; \
   fi' MOUNT_S3
 

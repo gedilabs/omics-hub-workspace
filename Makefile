@@ -30,9 +30,6 @@ endif
 ifeq ($(LINUX_UID),)
 $(error LINUX_UID not defined -- $(msg))
 endif
-ifeq ($(OMICSHUB_HOME),)
-$(error OMICSHUB_HOME not defined -- $(msg))
-endif
 
 env:
 	@echo OMICSHUB_HOME=$(OMICSHUB_HOME)

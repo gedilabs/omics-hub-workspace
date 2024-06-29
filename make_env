@@ -10,8 +10,8 @@
 # Make variables from environment
 ################################################################################
 
-EFS_SHARE_DNS = $(shell echo $$EFS_SHARE_DNS)
-EFS_MINIWDL_DNS = $(shell echo $$EFS_MINIWDL_DNS)
+#EFS_SHARE_DNS = $(shell echo $$EFS_SHARE_DNS)
+#EFS_MINIWDL_DNS = $(shell echo $$EFS_MINIWDL_DNS)
 S3_BUCKET_SEQ = $(shell echo $$S3_BUCKET_SEQ)
 S3_MNT_PATH = $(shell echo $$S3_MNT_PATH)
 EFS_MNT_PATH = $(shell echo $$EFS_MNT_PATH)

@@ -21,12 +21,12 @@ endif
 ifeq ($(S3_BUCKET_MINIWDL),)
 $(error S3_BUCKET_MINIWDL not defined -- $(msg))
 endif
-ifeq ($(EFS_SHARE_DNS),)
-$(error EFS_SHARE_DNS not defined -- $(msg))
-endif
-ifeq ($(EFS_MINIWDL_DNS),)
-$(error EFS_MINIWDL_DNS not defined -- $(msg))
-endif
+# ifeq ($(EFS_SHARE_DNS),)
+# $(error EFS_SHARE_DNS not defined -- $(msg))
+# endif
+# ifeq ($(EFS_MINIWDL_DNS),)
+# $(error EFS_MINIWDL_DNS not defined -- $(msg))
+# endif
 ifeq ($(LINUX_UID),)
 $(error LINUX_UID not defined -- $(msg))
 endif
@@ -59,7 +59,6 @@ mount-paths:
 	@( \
 	  ${MAKEDIR} $(OMICSHUB_HOME); \
 	  ${MAKEDIR} $(HOST_PATH_S3_SEQ); \
-	  ${MAKEDIR} $(HOST_PATH_S3_SEQ); \
 	  ${MAKEDIR} $(HOST_PATH_S3_MINIWDL); \
 	  ${MAKEDIR} $(HOST_PATH_EFS_SHARE); \
 	  ${MAKEDIR} $(HOST_PATH_EFS_MINIWDL); \
@@ -72,12 +71,6 @@ MOUNT_NFS=sh -c '\
 	  echo "already mounted ::  $$1:/ $$2"; \
   fi' MOUNT_NFS
 
-mount-efs:
-	@( \
-	  ${MOUNT_NFS} $(EFS_MINIWDL_DNS) $(HOST_PATH_EFS_MINIWDL); \
-	  ${MOUNT_NFS} $(EFS_SHARE_DNS) $(HOST_PATH_EFS_SHARE); \
-	)
-
 MOUNT_S3=sh -c '\
   if ! grep -qs "$$2" /proc/mounts; then \
   	echo "mounting :: s3://$$1:/ $$2"; \
@@ -85,12 +78,6 @@ MOUNT_S3=sh -c '\
 	  sudo chmod -R 755 $$2; else \
 	  echo "already mounted ::  s3://$$1:/ $$2"; \
   fi' MOUNT_S3
-
-mount-s3:
-	@( \
-	  ${MOUNT_S3} $(S3_BUCKET_SEQ) $(HOST_PATH_S3_SEQ); \
-	  ${MOUNT_S3} $(S3_BUCKET_MINIWDL) $(HOST_PATH_S3_MINIWDL) \
-	)
 
 MAKELINK=sh -c '\
   if [ ! -L $$2 ] ; then \
@@ -100,14 +87,22 @@ MAKELINK=sh -c '\
   	echo "already linked :: $$1 -> $$2"; \
   fi' MAKELINK
 
-links:
+mount-efs:
 	@( \
-	  ${MAKELINK} $(HOST_PATH_S3_SEQ) $(SYMLINK_S3_SEQ); \
-	  ${MAKELINK} $(HOST_PATH_S3_MINIWDL) $(SYMLINK_S3_MINIWDL); \
-	  ${MAKELINK} $(HOST_PATH_EFS_SHARE)/notebooks $(SYMLINK_EFS_NOTEBOOKS); \
+	  ${MOUNT_NFS} $(EFS_MINIWDL_DNS) $(HOST_PATH_EFS_MINIWDL); \
+	  ${MOUNT_NFS} $(EFS_SHARE_DNS) $(HOST_PATH_EFS_SHARE); \
+		${MAKELINK} $(HOST_PATH_EFS_SHARE)/notebooks $(SYMLINK_EFS_NOTEBOOKS); \
 	  ${MAKELINK} $(HOST_PATH_EFS_MINIWDL)/wdl $(SYMLINK_EFS_WDL); \
 	  ${MAKELINK} $(HOST_PATH_EFS_MINIWDL)/input_json $(SYMLINK_EFS_INPUT_JSON); \
 	  ${MAKELINK} $(HOST_PATH_EFS_MINIWDL)/miniwdl_run $(SYMLINK_EFS_MINIWDL); \
+	)
+
+mount-s3:
+	@( \
+	  ${MOUNT_S3} $(S3_BUCKET_SEQ) $(HOST_PATH_S3_SEQ); \
+	  ${MOUNT_S3} $(S3_BUCKET_MINIWDL) $(HOST_PATH_S3_MINIWDL) \
+	  ${MAKELINK} $(HOST_PATH_S3_SEQ) $(SYMLINK_S3_SEQ); \
+	  ${MAKELINK} $(HOST_PATH_S3_MINIWDL) $(SYMLINK_S3_MINIWDL); \
 	)
 
 UNMOUNT=sh -c '\
@@ -142,9 +137,11 @@ unlink:
 	  ${RMLINK} $(SYMLINK_EFS_MINIWDL); \
 	)
 
-mounts: mount-paths mount-efs mount-s3
+#mounts: mount-paths mount-efs mount-s3
+mounts: mount-paths mount-s3
 
-remount: unmount mount-efs mount-s3
+#remount: unmount mount-efs mount-s3
+remount: unmount mount-s3
 
 jupyter:
 	jupyterhub --ip 0.0.0.0 --port 8000 -f /etc/jupyterhub/jupyterhub_config.py
